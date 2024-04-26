@@ -65,6 +65,6 @@ public class MorseTesting {
         return morseDecoder.decodeMorseSentence(morseCode);
     }
     public String encodeMorseSentence(String text){
-        return morseEncoder.encodeSentence(text);
+        return morseEncoder.encode(text);
     }
 }

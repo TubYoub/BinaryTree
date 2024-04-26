@@ -2,8 +2,6 @@ package de.tubyoub;
 
 import de.tubyoub.morsecode.MorseTesting;
 
-import java.lang.reflect.GenericDeclaration;
-
 public class Main {
     private static MorseTesting morseTesting;
 
@@ -14,7 +12,7 @@ public class Main {
 
         String morseCode = ".... . .-.. .-.. ---/.-- --- .-. .-.. -..";
         String decodedMessage = morseTesting.decodeMorseSentence(morseCode);
-        String encodedMessage = morseTesting.encodeMorseSentence(decodedMessage);
+        String encodedMessage = morseTesting.encodeMorseSentence("IchHasseDieseScheiße");
 
         System.out.println("Decoded message: " + decodedMessage);
         System.out.println("Encoded message:" + encodedMessage);

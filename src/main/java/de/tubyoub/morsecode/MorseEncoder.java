@@ -2,53 +2,42 @@ package de.tubyoub.morsecode;
 
 import de.tubyoub.lib.BinaryTree;
 
+import java.util.Objects;
+
 public class MorseEncoder {
-    private BinaryTree<String> morseCodeTree;
+    private BinaryTree<String> morseTree;
 
-    public MorseEncoder(BinaryTree<String> morseCodeTree){
-        this.morseCodeTree = morseCodeTree;
+    public MorseEncoder(BinaryTree<String> morseTree) {
+        this.morseTree = morseTree;
     }
 
-   public String encodeCharacter(char character, BinaryTree<String> currentNode) {
-        if (currentNode == null || currentNode.getContent() == null)
-            return "";
+    public String encode(String message) {
+        StringBuilder encodedMessage = new StringBuilder();
+        for (char character : message.toUpperCase().toCharArray()) {
+            String morseCode = encodeCharacter(morseTree, character, "");
+            if (morseCode != null) {
+                encodedMessage.append(morseCode).append(" ");
+            } else {
+                encodedMessage.append("Character not found");
+            }
+        }
+        return encodedMessage.toString().trim();
+    }
 
-        if (character == ' ') {
+    private String encodeCharacter(BinaryTree<String> tree, char character, String morseCode) {
+        if (tree == null || tree.isEmpty()) {
+            return null;
+        }
+        if (" ".equals(String.valueOf(character))){
             return "/";
-        } else if (character == currentNode.getContent().charAt(0)) {
-            return "";
-        } else {
-            String leftEncoding = encodeCharacter(character, currentNode.getLeftTree());
-            if (!leftEncoding.equals("")) {
-                return "." + leftEncoding;
-            }
-
-            String rightEncoding = encodeCharacter(character, currentNode.getRightTree());
-            if (!rightEncoding.equals("")) {
-                return "-" + rightEncoding;
-            }
         }
-
-        return "";
-    }
-
-    public String encodeWord(String word) {
-        StringBuilder encodedWord = new StringBuilder();
-        for (char c : word.toUpperCase().toCharArray()) {
-            String encoding = encodeCharacter(c, morseCodeTree);
-            if (!encoding.equals("")) {
-                encodedWord.append(encoding).append(" ");
-            }
+        if (tree.getContent().equals(String.valueOf(character))) {
+            return morseCode;
         }
-        return encodedWord.toString().trim();
-    }
-
-    public String encodeSentence(String sentence) {
-        String[] words = sentence.split("\\s+");
-        StringBuilder encodedSentence = new StringBuilder();
-        for (String word : words) {
-            encodedSentence.append(encodeWord(word)).append(" / ");
+        String leftSearch = encodeCharacter(tree.getLeftTree(), character, morseCode + ".");
+        if (leftSearch != null) {
+            return leftSearch;
         }
-        return encodedSentence.toString().trim();
+        return encodeCharacter(tree.getRightTree(), character, morseCode + "-");
     }
 }
